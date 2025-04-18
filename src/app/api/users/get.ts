@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/utils/supabase/server";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Vérification du type de méthode HTTP
