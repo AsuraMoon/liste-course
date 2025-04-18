@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../utils/supabase/server";
+import { supabase } from "@/utils/supabase/server";
 
 console.log("Supabase Client Test:", supabase);
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
