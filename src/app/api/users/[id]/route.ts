@@ -11,7 +11,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
   const { data, error } = await supabase
     .from("users")
-    .update(body)
+    .update({ email, username, password_hash })
     .eq("id", id);
 
   if (error) {
