@@ -1,22 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";  // Utilisation de `useRouter` et `useSearchParams` de Next.js
 
 const ProfilePage = () => {
-  interface User {
-    id: number;
-    username: string;
-    email: string;
-  }
-
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ id: number; username: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
-  const router = useRouter();
+  const [id, setId] = useState<string | undefined>(undefined);  // Déclaration d'une variable locale pour l'ID
+  const router = useRouter();  // Utilisation de useRouter
+  const searchParams = useSearchParams();  // Utilisation de useSearchParams pour accéder aux paramètres de recherche
+
+  useEffect(() => {
+    const queryId = searchParams.get("id");  // Récupère l'ID depuis les paramètres de recherche
+    if (queryId) {
+      setId(queryId);
+    }
+  }, [searchParams]);
 
   const fetchUserProfile = async () => {
+    if (!id) return; // Assure-toi que l'ID est présent dans l'URL
+
     setLoading(true);
     setError("");
 
@@ -24,14 +29,20 @@ const ProfilePage = () => {
       // Vérifie si un utilisateur est connecté via localStorage
       const storedUser = localStorage.getItem("user");
       if (!storedUser) {
-        router.push("/");
+        router.push("/"); // Rediriger vers la page de connexion si non connecté
         return;
       }
 
       const currentUser = JSON.parse(storedUser);
 
+      if (currentUser.id !== parseInt(id)) {
+        // Si l'utilisateur essaie d'accéder à un autre profil
+        router.push(`/profile/${currentUser.id}`); // Redirection vers son propre profil
+        return;
+      }
+
       // Appelle l'API pour récupérer les données de l'utilisateur connecté
-      const res = await fetch(`/api/users/${currentUser.id}`);
+      const res = await fetch(`/api/users?id=${id}`);
       if (!res.ok) {
         throw new Error("Failed to fetch user profile");
       }
@@ -55,12 +66,12 @@ const ProfilePage = () => {
     setError("");
 
     try {
-      const res = await fetch(`/api/users/${user.id}`, {
+      const res = await fetch(`/api/users`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ id: user.id, username }),
       });
 
       const data = await res.json();
@@ -79,8 +90,10 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    fetchUserProfile();
-  }, [router]);
+    if (id) {
+      fetchUserProfile(); // Récupère les données du profil utilisateur
+    }
+  }, [id]);
 
   if (loading) {
     return (
@@ -105,7 +118,7 @@ const ProfilePage = () => {
           <strong>ID:</strong> {user.id}
         </p>
         <p>
-          <strong>Nom d'utilisateur:</strong> {user.username}
+          <strong>Nom d&apos;utilisateur:</strong> {user.username}
         </p>
         <p>
           <strong>Email:</strong> {user.email}

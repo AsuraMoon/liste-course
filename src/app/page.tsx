@@ -2,32 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import crypto from "crypto";
 
-const LoginPage = () => {
+const HomePage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Fonction de hashage SHA-256
-  const hashPassword = (password: string): string => {
-    return crypto.createHash("sha256").update(password).digest("hex");
-  };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // Hashage du mot de passe avant l'envoi
-      const hashedPassword = hashPassword(password);
-
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password: hashedPassword }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -36,15 +27,11 @@ const LoginPage = () => {
         throw new Error(data.error || "Login failed");
       }
 
-      // Stocke les informations de l'utilisateur dans localStorage ou dans un contexte
+      // Stocke les informations de l'utilisateur dans localStorage
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirige vers la liste de courses
-      if (data.user.id === 1) {
-        router.push("/shoppingList");
-      } else if (data.user.id === 2) {
-        router.push("/shoppingList");
-      }
+      // Redirige l'utilisateur vers son profil ou une autre page
+      router.push(`/profile/${data.user.id}`);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -55,7 +42,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen">
       <form
         onSubmit={handleLogin}
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
@@ -97,4 +84,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default HomePage;

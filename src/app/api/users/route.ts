@@ -1,43 +1,38 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";  // Supabase client pour la base de données
 
-export async function POST(req: Request) {
+// Récupération des utilisateurs
+export async function GET() {
   const supabase = await createClient();
-  const body = await req.json();
-
-  const { username, email, password_hash } = body;
-
-  if (!username || !email || !password_hash) {
-    return NextResponse.json(
-      { error: "Missing required fields: username, email, password_hash" },
-      { status: 400 }
-    );
-  }
-
-  const { data, error } = await supabase
-    .from("users")
-    .insert([{ username, email, password_hash }]);
+  const { data, error } = await supabase.from("users").select();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data, { status: 201 });
+  return NextResponse.json(data, { status: 200 });
 }
 
-// Gestion de la requête GET : Récupérer tous les utilisateurs
-export async function GET(req: Request) {
+// Récupération d'un utilisateur par ID
+export async function GET_USER(req: Request) {
   const supabase = await createClient();
-  const { data: users, error } = await supabase.from("users").select();
+  const { searchParams } = new URL(req.url);  // Récupération des paramètres de l'URL
+  const id = searchParams.get("id");
+
+  if (!id) {
+    return NextResponse.json({ error: "ID is required" }, { status: 400 });
+  }
+
+  const { data, error } = await supabase.from("users").select().eq("id", id).single();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(users, { status: 200 });
+  return NextResponse.json(data, { status: 200 });
 }
 
-// Gestion de la requête PUT : Mise à jour d'un utilisateur
+// Mise à jour d'un utilisateur
 export async function PUT(req: Request) {
   const supabase = await createClient();
   const body = await req.json();
@@ -77,7 +72,7 @@ export async function PUT(req: Request) {
   return NextResponse.json(data, { status: 200 });
 }
 
-// Gestion de la requête DELETE : Suppression d'un utilisateur
+// Suppression d'un utilisateur
 export async function DELETE(req: Request) {
   const supabase = await createClient();
   const body = await req.json();
