@@ -34,3 +34,25 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
   return NextResponse.json(data, { status: 200 });
 }
+//GET : Voir un utilisateur
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const supabase = await createClient();
+  const { id } = params;
+
+  // Récupérer un utilisateur par son ID
+  const { data: user, error } = await supabase
+    .from("users")
+    .select()
+    .eq("id", id)
+    .single(); // `single()` garantit qu'on récupère un seul utilisateur
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(user, { status: 200 });
+}

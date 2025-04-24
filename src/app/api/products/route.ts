@@ -1,6 +1,8 @@
+// app/api/products/route.ts
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
+// Récupérer la liste des produits
 export async function GET() {
   const supabase = await createClient();
   const { data: products, error } = await supabase.from("products").select();
@@ -12,11 +14,12 @@ export async function GET() {
   return NextResponse.json(products, { status: 200 });
 }
 
+// Ajouter un produit
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const body = await req.json();
 
-  const {name, desc, con_allerg} = body;
+  const { name, desc, con_allerg } = body;
 
   if (!name || !desc || !con_allerg) {
     return NextResponse.json(
@@ -24,3 +27,14 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+
+  const { data, error } = await supabase
+    .from("products")
+    .insert([{ name, description: desc, contains_allergens: con_allerg }]);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data, { status: 201 });
+}

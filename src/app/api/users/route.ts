@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-
   const { data, error } = await supabase
     .from("users")
     .insert([{ username, email, password_hash }]);
