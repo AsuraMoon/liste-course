@@ -1,40 +1,57 @@
-// app/api/products/route.ts
-import { createClient } from "@/utils/supabase/server";
-import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/utils/supabase/server"
 
-// Récupérer la liste des produits
 export async function GET() {
-  const supabase = await createClient();
-  const { data: products, error } = await supabase.from("products").select();
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) {
+      throw error;
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: 200,
+    });
   }
-
-  return NextResponse.json(products, { status: 200 });
+  catch (error) {
+    console.error("An error occurred:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 }
 
-// Ajouter un produit
-export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const body = await req.json();
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
 
-  const { name, desc, con_allerg } = body;
+    // Ajoutez des valeurs par défaut si elles ne sont pas fournies
+    const { name, description } = body;
+    const gluten = body.gluten ?? false;
+    const lactose = body.lactose ?? false;
+    const position = body.position ?? false;
 
-  if (!name || !desc || !con_allerg) {
-    return NextResponse.json(
-      { error: "Missing required fields: name, desc, con_allerg" },
-      { status: 400 }
-    );
+    // Insérer un nouveau produit dans la base de données
+    const { data, error } = await supabase
+      .from('products')
+      .insert([
+        {
+          name,
+          description,
+          gluten,
+          lactose,
+          position,
+        },
+      ]);
+
+    if (error) {
+      throw error;
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: 201,  // Code HTTP pour création réussie
+    });
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
-
-  const { data, error } = await supabase
-    .from("products")
-    .insert([{ name, description: desc, contains_allergens: con_allerg }]);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json(data, { status: 201 });
 }
