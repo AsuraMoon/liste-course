@@ -6,7 +6,8 @@ export async function GET() {
     const { data, error } = await supabase
       .from("shopping_list_items")
       .select("product_id, products(name)")
-      .eq("to_buy", true);
+      .eq("to_buy", true)
+
     if (error) {
       throw error;
     }
@@ -45,9 +46,10 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { product_id } = body;
 
+    // Ajouter ou mettre à jour un produit dans la liste de courses
     const { data, error } = await supabase
       .from("shopping_list_items")
-      .insert([{ product_id, to_buy: true }]);
+      .upsert([{ product_id, to_buy: true }], { onConflict: "product_id" });
 
     if (error) {
       throw error;

@@ -26,7 +26,9 @@ const HomePage = () => {
         body: JSON.stringify({ product_id }),
       });
       if (response.ok) {
-        setShoppingList((prev) => prev.filter((item) => item.product_id !== product_id));
+        setShoppingList((prev) =>
+          prev.filter((item) => item.product_id !== product_id)
+        );
       }
     } catch (error) {
       console.error("Error removing item from shopping list:", error);
