@@ -5,7 +5,7 @@ export async function GET() {
     // Récupérer tous les produits marqués comme "à acheter"
     const { data, error } = await supabase
       .from("shopping_list_items")
-      .select("product_id, products(name)")
+      .select("*, products(*)")
       .eq("to_buy", true)
 
     if (error) {
