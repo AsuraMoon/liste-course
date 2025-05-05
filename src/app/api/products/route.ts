@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Ajoutez des valeurs par défaut si elles ne sont pas fournies
-    const { name, description } = body;
+    const { name } = body;
     const gluten = body.gluten ?? false;
     const lactose = body.lactose ?? false;
     const position = body.position ?? false;
@@ -36,7 +36,6 @@ export async function POST(request: Request) {
       .insert([
         {
           name,
-          description,
           gluten,
           lactose,
           position,
