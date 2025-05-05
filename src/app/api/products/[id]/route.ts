@@ -1,12 +1,17 @@
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+import { supabase } from "@/utils/supabase/server";
+
+export async function GET(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = params;
+    const { id } = await context.params; // Résolution de `params`
 
     // Récupérer un produit spécifique par son ID
     const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', id)
+      .from("products")
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (error) {
@@ -20,18 +25,24 @@ export async function GET(request: Request, { params }: { params: { id: string }
     console.error("An error occurred:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
+  finally { 
+    console.log("GET request completed");
+  }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) { 
+export async function PUT(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = params;
+    const { id } = await context.params; // Résolution de `params`
     const body = await request.json();
 
     // Mettre à jour un produit existant par son ID
     const { data, error } = await supabase
-      .from('products')
+      .from("products")
       .update(body)
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) {
       throw error;
@@ -43,17 +54,23 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   } catch (error) {
     console.error("An error occurred:", error);
     return new Response("Internal Server Error", { status: 500 });
+  }finally {
+    console.log("PUT request completed");
   }
 }
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+
+export async function DELETE(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = params;
+    const { id } = await context.params; // Résolution de `params`
 
     // Supprimer un produit par son ID
     const { data, error } = await supabase
-      .from('products')
+      .from("products")
       .delete()
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) {
       throw error;
@@ -65,6 +82,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   } catch (error) {
     console.error("An error occurred:", error);
     return new Response("Internal Server Error", { status: 500 });
+  }finally {  
+    console.log("DELETE request completed");
   }
 }
-import { supabase } from "@/utils/supabase/server";

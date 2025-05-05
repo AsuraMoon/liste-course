@@ -1,14 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { use } from "react";
 
-interface ProductPageParams {
-  id: string;
-}
+type Params = Promise<{ id: string }>;
 
-const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
-  const { id } = use(params); // Utilisation de `use()` pour déstructurer `params`
+export default function ProductPage(props: { params: Params }) {
+  const params = use(props.params);
+  const { id } = params;
 
   interface Product {
     name: string;
@@ -26,11 +24,6 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
   });
   const router = useRouter();
 
-  const handleRedirectToProducts = () => {
-    router.push("/products");
-  };
-
-  // Récupérer les détails du produit
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -52,7 +45,6 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
     fetchProduct();
   }, [id]);
 
-  // Mettre à jour le produit
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -62,21 +54,17 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
         body: JSON.stringify(updatedProduct),
       });
       if (!response.ok) throw new Error("Failed to update product");
-  
+
       const data = await response.json();
-      setProduct(data); // Met à jour les détails du produit
+      setProduct(data);
       alert("Produit mis à jour avec succès !");
-      
-      // Redirige vers la page des produits après confirmation
       router.push("/products");
     } catch (error) {
       console.error("Error updating product:", error);
       alert("Échec de la mise à jour du produit.");
     }
   };
-  
 
-  // Supprimer le produit
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/products/${id}`, {
@@ -84,7 +72,7 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
       });
       if (!response.ok) throw new Error("Failed to delete product");
       alert("Produit supprimé avec succès !");
-      router.push("/products"); // Redirige vers la liste des produits
+      router.push("/products");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -101,7 +89,9 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
           <input
             type="text"
             value={updatedProduct.name}
-            onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+            onChange={(e) =>
+              setUpdatedProduct({ ...updatedProduct, name: e.target.value })
+            }
             placeholder="Nom du produit"
             className="border p-2 mb-2 w-full"
           />
@@ -110,7 +100,12 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
               type="checkbox"
               name="gluten"
               checked={updatedProduct.gluten}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, gluten: e.target.checked })}
+              onChange={(e) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  gluten: e.target.checked,
+                })
+              }
               className="mr-2"
             />
             Contient du gluten
@@ -120,7 +115,12 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
               type="checkbox"
               name="lactose"
               checked={updatedProduct.lactose}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, lactose: e.target.checked })}
+              onChange={(e) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  lactose: e.target.checked,
+                })
+              }
               className="mr-2"
             />
             Contient du lactose
@@ -130,7 +130,12 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
               type="checkbox"
               name="position"
               checked={updatedProduct.position}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, position: e.target.checked })}
+              onChange={(e) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  position: e.target.checked,
+                })
+              }
               className="mr-2"
             />
             Position
@@ -149,14 +154,6 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
           Supprimer
         </button>
       </div>
-      <button
-        onClick={handleRedirectToProducts}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-      >
-        Aller à la page des produits
-      </button>
     </div>
   );
-};
-
-export default ProductPage;
+}
