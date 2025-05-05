@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 const CreateNewProductPage = () => {
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
     gluten: false,
     lactose: false,
     position: false,
@@ -56,18 +55,6 @@ const CreateNewProductPage = () => {
             value={formData.name}
             onChange={handleInputChange}
             required
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           />
         </div>

@@ -12,11 +12,18 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
 
   interface Product {
     name: string;
-    description: string;
+    gluten: boolean;
+    lactose: boolean;
+    position: boolean;
   }
 
   const [product, setProduct] = useState<Product | null>(null);
-  const [updatedProduct, setUpdatedProduct] = useState({ name: "", description: "" });
+  const [updatedProduct, setUpdatedProduct] = useState({
+    name: "",
+    gluten: false,
+    lactose: false,
+    position: false,
+  });
   const router = useRouter();
 
   const handleRedirectToProducts = () => {
@@ -31,7 +38,12 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
         if (!response.ok) throw new Error("Failed to fetch product");
         const data = await response.json();
         setProduct(data);
-        setUpdatedProduct({ name: data.name, description: data.description });
+        setUpdatedProduct({
+          name: data.name,
+          gluten: data.gluten,
+          lactose: data.lactose,
+          position: data.position,
+        });
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -41,11 +53,6 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
   }, [id]);
 
   // Mettre à jour le produit
-  interface UpdatedProduct {
-    name: string;
-    description: string;
-  }
-
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -55,13 +62,19 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
         body: JSON.stringify(updatedProduct),
       });
       if (!response.ok) throw new Error("Failed to update product");
-      const data: UpdatedProduct[] = await response.json();
-      setProduct(data[0]); // Met à jour les détails du produit
+  
+      const data = await response.json();
+      setProduct(data); // Met à jour les détails du produit
       alert("Produit mis à jour avec succès !");
+      
+      // Redirige vers la page des produits après confirmation
+      router.push("/products");
     } catch (error) {
       console.error("Error updating product:", error);
+      alert("Échec de la mise à jour du produit.");
     }
   };
+  
 
   // Supprimer le produit
   const handleDelete = async () => {
@@ -84,7 +97,6 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
       <h1 className="text-4xl font-bold mb-4">Détails du produit</h1>
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-        <p className="mb-4">{product.description}</p>
         <form onSubmit={handleUpdate} className="mb-4">
           <input
             type="text"
@@ -93,14 +105,36 @@ const ProductPage = ({ params }: { params: Promise<ProductPageParams> }) => {
             placeholder="Nom du produit"
             className="border p-2 mb-2 w-full"
           />
-          <textarea
-            value={updatedProduct.description}
-            onChange={(e) =>
-              setUpdatedProduct({ ...updatedProduct, description: e.target.value })
-            }
-            placeholder="Description"
-            className="border p-2 mb-2 w-full"
-          />
+          <label className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              name="gluten"
+              checked={updatedProduct.gluten}
+              onChange={(e) => setUpdatedProduct({ ...updatedProduct, gluten: e.target.checked })}
+              className="mr-2"
+            />
+            Contient du gluten
+          </label>
+          <label className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              name="lactose"
+              checked={updatedProduct.lactose}
+              onChange={(e) => setUpdatedProduct({ ...updatedProduct, lactose: e.target.checked })}
+              className="mr-2"
+            />
+            Contient du lactose
+          </label>
+          <label className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              name="position"
+              checked={updatedProduct.position}
+              onChange={(e) => setUpdatedProduct({ ...updatedProduct, position: e.target.checked })}
+              className="mr-2"
+            />
+            Position
+          </label>
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 rounded w-full"
