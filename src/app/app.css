@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 16px;
+  background: #f9fafb; /* Couleur de fond douce */
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 12px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151; /* Couleur du texte */
+}
+
+.card button {
+  color: #ef4444;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.card button:hover {
+  color: #dc2626; /* Rouge foncé */
+  text-decoration: underline;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 32px;
+  color: #1f2937; /* Couleur principale du titre */
+}
+
+.header h2 {
+  font-size: 20px;
+  color: #374151;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.button:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}

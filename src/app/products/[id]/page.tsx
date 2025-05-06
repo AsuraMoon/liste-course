@@ -1,6 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import "./productsid.css";
 
 type Params = Promise<{ id: string }>;
 
