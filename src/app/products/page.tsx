@@ -49,8 +49,14 @@ const ProductsPage = () => {
     }
   };
 
-  const productsHigh = products.filter((product) => product.position === true);
-  const productsLow = products.filter((product) => product.position === false);
+  // Trier les produits par ordre alphabétique
+  const productsHigh = products
+    .filter((product) => product.position === true)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const productsLow = products
+    .filter((product) => product.position === false)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="container">

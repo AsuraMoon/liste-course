@@ -24,8 +24,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Ajoutez des valeurs par défaut si elles ne sont pas fournies
-    const { name } = body;
+    // Convertir les propriétés en PascalCase
+    const toPascalCase = (str: string): string =>
+      str.charAt(0).toUpperCase() + str.slice(1);
+
+    const name = toPascalCase(body.name ?? "");
     const gluten = body.gluten ?? false;
     const lactose = body.lactose ?? false;
     const position = body.position ?? false;
@@ -54,3 +57,4 @@ export async function POST(request: Request) {
     return new Response("Internal Server Error", { status: 500 });
   }
 }
+
