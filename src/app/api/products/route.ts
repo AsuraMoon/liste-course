@@ -25,10 +25,11 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Convertir les propriétés en PascalCase
-    const toPascalCase = (str: string): string =>
-      str.charAt(0).toUpperCase() + str.slice(1);
-
-    const name = toPascalCase(body.name ?? "");
+    const toTitleCase = (str: string): string =>
+      str.replace(/\w\S*/g, (txt) =>
+        txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+      );
+    const name = toTitleCase(body.name ?? "");
     const gluten = body.gluten ?? false;
     const lactose = body.lactose ?? false;
     const position = body.position ?? false;

@@ -37,6 +37,16 @@ export async function PUT(
   try {
     const { id } = await context.params; // Résolution de `params`
     const body = await request.json();
+    function toTitleCase(str: string): string {
+      return str.replace(/\w\S*/g, (txt) =>
+        txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+      );
+}
+
+    // Si le nom est modifié, le mettre en toTitleCase
+    if (body.name && typeof body.name === "string") {
+      body.name = toTitleCase(body.name);
+    }
 
     // Mettre à jour un produit existant par son ID
     const { data, error } = await supabase
