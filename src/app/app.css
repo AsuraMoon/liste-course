@@ -1,82 +1,149 @@
-.container {
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1e40af;
+  --secondary-color: #10b981;
+  --secondary-hover: #059669;
+  --tertiary-color: #f59e0b; /* Couleur tertiaire */
+  --tertiary-hover: #d97706; /* Couleur tertiaire au survol */
+  --quaternary-color: #ef4444; /* Couleur quaternaire */
+  --quaternary-hover: #dc2626; /* Couleur quaternaire au survol */
+  --background-color: #f3f4f6;
+  --text-color: #1f2937;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --hover-shadow: rgba(0, 0, 0, 0.2);
+}
+
+
+.btn-primary, .btn-secondary, .btn-tertiary, .btn-quaternary {
+  font-size: 14px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: var(--secondary-color);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-hover);
+}
+
+/* Nouveau style pour le bouton tertiaire */
+.btn-tertiary {
+  background: var(--tertiary-color);
+  color: #fff;
+}
+
+.btn-tertiary:hover {
+  background: var(--tertiary-hover);
+}
+
+.btn-quaternary {
+  background: var(--quaternary-color);
+  color: #fff;
+}
+
+.btn-quaternary:hover {
+  background: var(--quaternary-hover);
+}
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--background-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+section{
+ text-align: center;
+}
+
+.responsive-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
   padding: 16px;
-  background: #f9fafb; /* Couleur de fond douce */
+  max-width: 1200px;
+  margin: auto;
 }
 
-.card {
+.responsive-header {
+  width: 100%;
+  text-align: center;
+}
+
+.responsive-wrap {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Par défaut */
+}
+
+/* Limitation explicite à 3 cartes maximum sur les écrans moyens */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .responsive-wrap {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Limitation explicite à 2 cartes sur les écrans étroits */
+@media (max-width: 768px) {
+  .responsive-wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Une seule carte par ligne sur les très petits écrans */
+@media (max-width: 480px) {
+  .responsive-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+.responsive-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--card-shadow);
   padding: 16px;
-  margin-bottom: 12px;
-  width: 100%;
-  max-width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+.responsive-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px var(--hover-shadow);
 }
 
-.card span {
+/* Titre de la carte centré */
+.responsive-card span {
   font-size: 16px;
   font-weight: 500;
-  color: #374151; /* Couleur du texte */
-}
-
-.card button {
-  color: #ef4444;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: color 0.2s, text-decoration 0.2s;
-}
-
-.card button:hover {
-  color: #dc2626; /* Rouge foncé */
-  text-decoration: underline;
-}
-
-.header {
   text-align: center;
-  margin-bottom: 16px;
 }
 
-.header h1 {
-  font-size: 32px;
-  color: #1f2937; /* Couleur principale du titre */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center; /* Centrer les boutons horizontalement */
 }
 
-.header h2 {
-  font-size: 20px;
-  color: #374151;
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-
-.button {
-  margin-top: 16px;
-  padding: 12px 24px;
-  background: #3b82f6;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-
-.button:hover {
-  background: #2563eb;
-  transform: scale(1.05);
-}

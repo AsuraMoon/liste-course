@@ -52,41 +52,61 @@ const HomePage = () => {
 
   const shoppingListHigh = shoppingList.filter(
     (item) => item.products?.position === true
-  );
+  ).sort((a, b) => a.products.name.localeCompare(b.products.name));
+
   const shoppingListLow = shoppingList.filter(
     (item) => item.products?.position === false
-  );
+  ).sort((a, b) => a.products.name.localeCompare(b.products.name));
 
   return (
-    <div className="container">
-      <div className="header">
+    <div className="responsive-container">
+      <header className="responsive-header">
         <h1>Votre liste de courses</h1>
-      </div>
-      <div>
+      </header>
+      <section>
         <h2>Produits en Haut</h2>
-        {shoppingListHigh
-          .sort((a, b) => a.products.name.localeCompare(b.products.name))
-          .map((item) => (
-            <div key={item.product_id} className="card">
-              <span>{item.products.name}</span>
-              <button onClick={() => handleRemove(item.product_id)}>
-                Retirer
-              </button>
+        <div className="responsive-wrap">
+          {shoppingListHigh.map((item) => (
+            <div key={item.product_id} className="responsive-card">
+              <span className="card-title">{item.products.name}</span>
+              <div className="card-actions">
+                <button
+                  className="btn-secondary"
+                  onClick={() => handleRemove(item.product_id)}
+                >
+                  Retirer
+                </button>
+              </div>
             </div>
           ))}
+        </div>
+      </section>
+      <section>
         <h2>Produits en Bas</h2>
-        {shoppingListLow.map((item) => (
-          <div key={item.product_id} className="card">
-            <span>{item.products.name}</span>
-            <button onClick={() => handleRemove(item.product_id)}>
-              Retirer
-            </button>
-          </div>
-        ))}
-      </div>
-      <button onClick={handleRedirectToProducts} className="button">
-        Aller à la page des produits
-      </button>
+        <div className="responsive-wrap">
+          {shoppingListLow.map((item) => (
+            <div key={item.product_id} className="responsive-card">
+              <span className="card-title">{item.products.name}</span>
+              <div className="card-actions">
+                <button
+                  className="btn-quaternary"
+                  onClick={() => handleRemove(item.product_id)}
+                >
+                  Retirer
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <footer className="action-buttons">
+        <button
+          onClick={handleRedirectToProducts}
+          className="btn-primary"
+        >
+          Aller à la page des produits
+        </button>
+      </footer>
     </div>
   );
 };

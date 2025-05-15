@@ -7,12 +7,8 @@ const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const router = useRouter();
 
-  const handleRedirectToList = () => {
-    router.push("/");
-  };
-  const handleRedirectToNew = () => {
-    router.push("/products/createNew");
-  };
+  const handleRedirectToList = () => router.push("/");
+  const handleRedirectToNew = () => router.push("/products/createNew");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,7 +30,7 @@ const ProductsPage = () => {
     position: boolean;
   }
 
-  const handleAddToShoppingList = async (product_id: number): Promise<void> => {
+  const handleAddToShoppingList = async (product_id: number) => {
     try {
       const response = await fetch("/api/shoppingList", {
         method: "POST",
@@ -49,7 +45,6 @@ const ProductsPage = () => {
     }
   };
 
-  // Trier les produits par ordre alphabétique
   const productsHigh = products
     .filter((product) => product.position === true)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -59,60 +54,66 @@ const ProductsPage = () => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="container">
-      <div className="header">
+    <div className="responsive-container">
+      <header className="responsive-header">
         <h1>Liste des produits</h1>
-      </div>
-      <div>
+      </header>
+      <section>
         <h2>Produits en Haut</h2>
-        {productsHigh.map((item: Product) => (
-          <div key={item.id} className="card">
-            <span>{item.name}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleAddToShoppingList(item.id)}
-                className="text-blue-500"
-              >
-                Ajouter à la liste
-              </button>
-              <button
-                onClick={() => router.push(`/products/${item.id}`)}
-                className="text-green-500"
-              >
-                Voir le produit
-              </button>
+        <div className="responsive-wrap">
+          {productsHigh.map((item: Product) => (
+            <div key={item.id} className="responsive-card">
+              <span className="card-title">{item.name}</span>
+              <div className="card-actions">
+                <button
+                  onClick={() => handleAddToShoppingList(item.id)}
+                  className="btn-primary"
+                >
+                  Ajouter à la liste
+                </button>
+                <button
+                  onClick={() => router.push(`/products/${item.id}`)}
+                  className="btn-secondary"
+                >
+                  Voir le produit
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </section>
+      <section>
         <h2>Produits en Bas</h2>
-        {productsLow.map((item: Product) => (
-          <div key={item.id} className="card">
-            <span>{item.name}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleAddToShoppingList(item.id)}
-                className="text-blue-500"
-              >
-                Ajouter à la liste
-              </button>
-              <button
-                onClick={() => router.push(`/products/${item.id}`)}
-                className="text-green-500"
-              >
-                Voir le produit
-              </button>
+        <div className="responsive-wrap">
+          {productsLow.map((item: Product) => (
+            <div key={item.id} className="responsive-card">
+              <span className="card-title">{item.name}</span>
+              <div className="card-actions">
+                <button
+                  onClick={() => handleAddToShoppingList(item.id)}
+                  className="btn-primary"
+                >
+                  Ajouter à la liste
+                </button>
+                <button
+                  onClick={() => router.push(`/products/${item.id}`)}
+                  className="btn-secondary"
+                >
+                  Voir le produit
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="action-buttons">
-        <button onClick={handleRedirectToList} className="bg-blue-500">
+          ))}
+        </div>
+      </section>
+      <footer className="action-buttons">
+        <button onClick={handleRedirectToList} className="btn-tertiary">
           Aller à la liste de courses
         </button>
-        <button onClick={handleRedirectToNew} className="bg-green-500">
+        <button onClick={handleRedirectToNew} className="btn-tertiary">
           Créer un nouveau produit
         </button>
-      </div>
+      </footer>
     </div>
   );
 };
