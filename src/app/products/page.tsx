@@ -19,6 +19,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        await fetch("/api/keep-alive");
         const response = await fetch("/api/products");
         const data = await response.json();
         setProducts(data);
