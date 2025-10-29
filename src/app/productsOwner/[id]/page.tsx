@@ -11,32 +11,26 @@ export default function ProductPage(props: { params: Params }) {
 
   interface Product {
     name: string;
-    gluten: boolean;
-    lactose: boolean;
-    position: boolean;
+    position: string;
   }
 
   const [product, setProduct] = useState<Product | null>(null);
   const [updatedProduct, setUpdatedProduct] = useState({
     name: "",
-    gluten: false,
-    lactose: false,
-    position: false,
+    position: "haut",
   });
   const router = useRouter();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${id}`);
+        const response = await fetch(`/api/productsOwner/${id}`);
         if (!response.ok) throw new Error("Failed to fetch product");
         const data = await response.json();
         setProduct(data);
         setUpdatedProduct({
           name: data.name,
-          gluten: data.gluten,
-          lactose: data.lactose,
-          position: data.position,
+          position: data.position
         });
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -49,7 +43,7 @@ export default function ProductPage(props: { params: Params }) {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`/api/productsOwner/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProduct),
@@ -59,7 +53,7 @@ export default function ProductPage(props: { params: Params }) {
       const data = await response.json();
       setProduct(data);
       alert("Produit mis à jour avec succès !");
-      router.push("/products");
+      router.push("/productsOwner");
     } catch (error) {
       console.error("Error updating product:", error);
       alert("Échec de la mise à jour du produit.");
@@ -68,12 +62,12 @@ export default function ProductPage(props: { params: Params }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`/api/productsOwner/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete product");
       alert("Produit supprimé avec succès !");
-      router.push("/products");
+      router.push("/productsOwner");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -96,50 +90,21 @@ export default function ProductPage(props: { params: Params }) {
             placeholder="Nom du produit"
             className="border p-2 mb-2 w-full"
           />
-          <label className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              name="gluten"
-              checked={updatedProduct.gluten}
-              onChange={(e) =>
-                setUpdatedProduct({
-                  ...updatedProduct,
-                  gluten: e.target.checked,
-                })
-              }
-              className="mr-2"
-            />
-            Contient du gluten
-          </label>
-          <label className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              name="lactose"
-              checked={updatedProduct.lactose}
-              onChange={(e) =>
-                setUpdatedProduct({
-                  ...updatedProduct,
-                  lactose: e.target.checked,
-                })
-              }
-              className="mr-2"
-            />
-            Contient du lactose
-          </label>
-          <label className="flex items-center mb-2">
-            <input
-              type="checkbox"
+          <label className="block mb-2">
+            <span className="block font-semibold mb-1">Position</span>
+            <select
               name="position"
-              checked={updatedProduct.position}
+              value={updatedProduct.position}
               onChange={(e) =>
-                setUpdatedProduct({
-                  ...updatedProduct,
-                  position: e.target.checked,
-                })
+                setUpdatedProduct({ ...updatedProduct, position: e.target.value })
               }
-              className="mr-2"
-            />
-            Position
+              className="border p-2 w-full"
+            >
+              <option value="haut">Haut</option>
+              <option value="bas_sec">Bas Sec</option>
+              <option value="bas_surgele">Bas Surgelé</option>
+              <option value="bas_frais">Bas Frais</option>
+            </select>
           </label>
           <button
             type="submit"

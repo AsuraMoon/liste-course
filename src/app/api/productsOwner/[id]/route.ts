@@ -9,7 +9,7 @@ export async function GET(
 
     // Récupérer un produit spécifique par son ID
     const { data, error } = await supabase
-      .from("products")
+      .from("products_owner")
       .select("*")
       .eq("id", id)
       .single();
@@ -50,7 +50,7 @@ export async function PUT(
 
     // Mettre à jour un produit existant par son ID
     const { data, error } = await supabase
-      .from("products")
+      .from("products_owner")
       .update(body)
       .eq("id", id);
 
@@ -78,7 +78,7 @@ export async function DELETE(
 
     // Supprimer un produit par son ID
     const { data, error } = await supabase
-      .from("products")
+      .from("products_owner")
       .delete()
       .eq("id", id);
 
