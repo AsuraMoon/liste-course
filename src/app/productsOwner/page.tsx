@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./products.css";
+import "../app.css";
 
 interface Product {
   id: number;
