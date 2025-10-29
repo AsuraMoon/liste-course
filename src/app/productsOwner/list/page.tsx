@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../app.css";
+import "../products.css"
+
 
 type Product = {
   id: number;
@@ -21,7 +23,7 @@ export default function ListPage() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch("/api/shoppingOwnerList", { cache: "no-store" });
+        const res = await fetch("/api/shoppingOwnerList");
         if (!res.ok) throw new Error(await res.text());
 
         const data = await res.json();
@@ -49,7 +51,6 @@ export default function ListPage() {
 
       if (!res.ok) throw new Error(await res.text());
 
-      // Mise à jour locale : on retire l’élément de la liste
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
       console.error("Error marking product as bought:", err);
@@ -63,62 +64,66 @@ export default function ListPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
 
   const renderSection = (title: string, items: Product[]) => (
-    <section key={title}>
-      <h2>{title}</h2>
-      <div className="responsive-wrap">
-        {items.length === 0 ? (
-          <p className="text-sm text-gray-500">Aucun produit</p>
-        ) : (
-          items.map((p) => (
-            <div key={p.id} className="responsive-card">
-              <span className="card-title">{p.name}</span>
-              <div className="card-actions">
-                <button
-                  onClick={() => markAsBought(p.id)}
-                  className="btn-primary"
-                >
-                  Acheté
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+    <section key={title} className="mb-5">
+      <h2 className="mb-3">{title}</h2>
+      {items.length === 0 ? (
+        <p className="text-muted">Aucun produit</p>
+      ) : (
+        <div className="responsive-wrap">
+  {items.map((p) => (
+    <div key={p.id}>
+      <div className="responsive-card">
+        <span className="card-title">{p.name}</span>
+        <div className="card-actions">
+          <button
+            onClick={() => markAsBought(p.id)}
+            className="btn-primary w-100"
+          >
+            Acheté
+          </button>
+        </div>
       </div>
+    </div>
+  ))}
+</div>
+
+      )}
     </section>
   );
 
-  if (loading) return <div className="p-6">Chargement…</div>;
+  if (loading) return <div className="p-4">Chargement…</div>;
   if (error)
     return (
-      <div className="p-6">
-        <p className="text-red-600">{error}</p>
-        <button onClick={() => router.refresh()} className="mt-4 btn-primary">
+      <div className="p-4">
+        <p className="text-danger">{error}</p>
+        <button onClick={() => router.refresh()} className="btn-primary mt-3">
           Réessayer
         </button>
       </div>
     );
 
-  const haut = filterByPosition("haut");
-  const basSec = filterByPosition("bas_sec");
-  const basSurgele = filterByPosition("bas_surgele");
-  const basFrais = filterByPosition("bas_frais");
+  const categories = [
+    { title: "Haut", key: "haut" },
+    { title: "Bas Sec", key: "bas_sec" },
+    { title: "Bas Surgelé", key: "bas_surgele" },
+    { title: "Bas Frais", key: "bas_frais" },
+  ];
 
   return (
-    <div className="responsive-container">
-      <header className="responsive-header">
+    <div className="container py-4">
+      <header className="mb-4 text-center">
         <h1>Votre liste de courses</h1>
         <button
           onClick={() => router.push("/productsOwner")}
-          className="btn-tertiary"
+          className="btn-tertiary mt-2"
         >
           Aller à la page des produits
         </button>
       </header>
 
-      {renderSection("Haut", haut)}
-      {renderSection("Bas Sec", basSec)}
-      {renderSection("Bas Surgelé", basSurgele)}
-      {renderSection("Bas Frais", basFrais)}
+      {categories.map((cat) =>
+        renderSection(cat.title, filterByPosition(cat.key))
+      )}
     </div>
   );
 }
