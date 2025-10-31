@@ -26,3 +26,28 @@ export async function GET() {
     return new Response("Internal Server Error", { status: 500 });
   }
 }
+
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const product_id = body.product_id;
+
+    if (!product_id) {
+      return new Response("Product ID missing", { status: 400 });
+    }
+
+    // Met à jour uniquement to_buy = true dans shopping_owner_list_items
+    const { data, error } = await supabase
+      .from("shopping_owner_list_items")
+      .update({ to_buy: false })
+      .eq("product_id", product_id);
+
+    if (error) throw error;
+
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
+}

@@ -46,7 +46,7 @@ export default function ListPage() {
       const res = await fetch("/api/shoppingOwnerList", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ product_id:id }),
       });
 
       if (!res.ok) throw new Error(await res.text());
