@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import "./products.css";
+import "products.css";
 import "../app.css";
 
 interface Product {
@@ -19,7 +19,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        await fetch("/api/keepAlive");
+        await fetch("/api/keepAlive", { method: "POST" });
         const res = await fetch("/api/productsOwner");
         const data = await res.json();
         setProducts(Array.isArray(data) ? data : []);

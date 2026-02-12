@@ -1,16 +1,43 @@
--- Table des produits
-CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,  -- Nom du produit
-    description TEXT,  -- Description du produit
-    position BOOLEAN DEFAULT FALSE NOT NULL,  -- Position du produit : TRUE = Haut, FALSE = Bas
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Date de création du produit
+-- Produits pour les invités
+CREATE TABLE products_guest (
+  id          serial PRIMARY KEY,
+  name        varchar NOT NULL UNIQUE,
+  position    varchar NOT NULL DEFAULT 'haut'
+              CHECK (position IN ('haut', 'bas_sec', 'bas_surgele', 'bas_frais')),
+  created_at  timestamptz DEFAULT now()
 );
 
--- Table des utilisateurs
+-- Produits pour les propriétaires
+CREATE TABLE products_owner (
+  id          serial PRIMARY KEY,
+  name        varchar NOT NULL UNIQUE,
+  position    varchar NOT NULL DEFAULT 'haut'
+              CHECK (position IN ('haut', 'bas_sec', 'bas_surgele', 'bas_frais')),
+  created_at  timestamptz DEFAULT now()
+);
+
+-- Liste d’achats des invités
+CREATE TABLE shopping_guest_list_items (
+  product_id  int REFERENCES products_guest(id) ON DELETE CASCADE,
+  to_buy      boolean DEFAULT false
+);
+
+-- Liste d’achats des propriétaires
+CREATE TABLE shopping_owner_list_items (
+  product_id  int UNIQUE REFERENCES products_owner(id) ON DELETE CASCADE,
+  to_buy      boolean DEFAULT false
+);
+
+-- Heartbeat système (mise à jour)
+CREATE TABLE system_heartbeat (
+  id         serial PRIMARY KEY,
+  last_ping  timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Utilisateurs
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL,
-    role VARCHAR(10) CHECK (role IN ('owner', 'guest')) NOT NULL
+  id       serial PRIMARY KEY,
+  email    varchar NOT NULL UNIQUE,
+  password varchar NOT NULL,
+  role     varchar NOT NULL CHECK (role IN ('owner', 'guest'))
 );

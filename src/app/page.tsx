@@ -12,6 +12,8 @@ const HomePage = () => {
     router.push("/");
   };
 
+  
+
   return (
     <div className="home-container">
       <h1>Bonjour, Bienvenue sur MiamList.Si vous êtes visiteur sélectionnez Démo le mail et le code de démonstration vous attendrons, sachez que vous aurez une version restreinte de lapplication,
