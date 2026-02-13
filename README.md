@@ -1,12 +1,20 @@
-Liste-Course
+###Liste‑Course
+##MiamListe — A Next.js (App Router) project to manage a shopping list.
 
-This is a Next.js project bootstrapped with create-next-app.
+##Getting started
+#Prerequisites
+Node.js v18+ (only required for local development)
 
-Getting Started
-Development
+npm / yarn / pnpm / bun (optional for local dev)
 
-To start the development server locally:
+Docker (recommended for running without installing Node)
 
+Copy env.example → .env and fill your keys before running the app in Docker or locally.
+
+#Development
+Install dependencies and start the dev server:
+
+bash
 npm install
 npm run dev
 # or
@@ -15,57 +23,41 @@ yarn dev
 pnpm dev
 # or
 bun dev
+Open http://localhost:3000 in your browser.
+Edit src/app/page.tsx (or app/page.tsx) — the page auto‑reloads while you work.
 
-Open http://localhost:3000
- in your browser to see the result.
-You can start editing the page by modifying app/page.tsx. The page auto-updates as you edit the file.
+#Local
+If you want to test a production build locally:
 
+bash
+npm run build
+npm run start
 Using Docker (recommended)
+This repository already contains a Dockerfile and an env.example. You do not need to recreate the Dockerfile.
 
-This project is fully Dockerized. You do not need to install Node.js or npm locally.
+Create your .env
 
-1. Create a .env file
+bash
+cp env.example .env
+# then edit .env and fill the keys (do not commit .env)
+Build the Docker image
 
-Create a file named .env in the project root with the following placeholders:
+bash
+docker build -t liste-course .
+Run the container
 
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_publishable_key_here
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
+bash
+docker run -d -p 3000:3000 --env-file .env --name liste-course liste-course
+The app will be available at: http://localhost:3000.
 
-Do not commit .env to GitHub. This file contains sensitive keys.
+##Learn more
+Next.js docs: https://nextjs.org/docs
 
-2. Build the Docker image
-docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL \
-             --build-arg NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=$NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY \
-             --build-arg SUPABASE_SERVICE_ROLE_KEY=$SUPABASE_SERVICE_ROLE_KEY \
-             -t liste-course .
-3. Run the container
-docker run -d -p 3000:3000 \
-  --env-file .env \
-  liste-course
+Next.js tutorial: https://nextjs.org/learn
 
-The app will be available at http://localhost:3000
-.
+##Contributing & License
+Fork the repo, create a feature branch, open a PR with a clear description and screenshots if relevant.
 
-Account Demo
+Check the LICENSE file in the repository for license details.
 
-Email: DEMO@demo.com
-
-Password: DEMOmdp
-
-Learn More
-
-Next.js Documentation
- – Learn about Next.js features and API.
-
-Learn Next.js
- – An interactive Next.js tutorial.
-
-Check the Next.js GitHub repository
- for contributions and feedback.
-
-Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the Vercel platform.
-See the Next.js deployment documentation for more details.
-
+#Repository: https://github.com/AsuraMoon/liste-course
