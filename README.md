@@ -1,10 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Liste-Course
 
-## Getting Started
+This is a Next.js project bootstrapped with create-next-app.
 
-First, run the development server:
+Getting Started
+Development
 
-```bash
+To start the development server locally:
+
+npm install
 npm run dev
 # or
 yarn dev
@@ -12,29 +15,61 @@ yarn dev
 pnpm dev
 # or
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
+ in your browser to see the result.
+You can start editing the page by modifying app/page.tsx. The page auto-updates as you edit the file.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Using Docker (recommended)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is fully Dockerized. You do not need to install Node.js or npm locally.
 
-## Learn More
+1. Create a .env file
 
-To learn more about Next.js, take a look at the following resources:
+Create a file named .env in the project root with the following placeholders:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_publishable_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Do not commit .env to GitHub. This file contains sensitive keys.
 
-## Deploy on Vercel
+2. Build the Docker image
+docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL \
+             --build-arg NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=$NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY \
+             --build-arg SUPABASE_SERVICE_ROLE_KEY=$SUPABASE_SERVICE_ROLE_KEY \
+             -t liste-course .
+3. Run the container
+docker run -d -p 3000:3000 \
+  --env-file .env \
+  liste-course
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app will be available at http://localhost:3000
+.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Account Demo
 
+Email: DEMO@demo.com
 
-Compte Demo : DEMO@demo.com
-MDP Demo : DEMOmdp
+Password: DEMOmdp
+
+Learn More
+
+Next.js Documentation
+ – Learn about Next.js features and API.
+
+Learn Next.js
+ – An interactive Next.js tutorial.
+
+Check the Next.js GitHub repository
+ for contributions and feedback.
+
+Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the Vercel platform.
+See the Next.js deployment documentation
+ for more details.
+
+Si tu veux, je peux aussi te réécrire ton Dockerfile pour qu’il utilise directement .env, sans jamais mettre tes clés dans le Dockerfile ou dans le README. Ça rendrait le projet totalement sûr pour GitHub.
+
+Veux‑tu que je fasse ça ?
