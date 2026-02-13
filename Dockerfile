@@ -1,22 +1,19 @@
-# --- Builder ---
+# syntax=docker/dockerfile:1.4
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --production=false
 
 COPY . .
 
-# Next.js lit les variables d'environnement au build
-# Elles seront injectées via --env-file ou --build-arg
-RUN npm run build
+# utiliser le secret .env uniquement pendant le build
+RUN --mount=type=secret,id=supabase_env \
+    export $(cat /run/secrets/supabase_env) && \
+    npm run build
 
-# --- Runner ---
 FROM node:20-alpine AS runner
-
 WORKDIR /app
-
 ENV NODE_ENV=production
 
 COPY --from=builder /app/package*.json ./
@@ -25,5 +22,4 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["npm","start"]
