@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../app.css";
-import "../products.css"
 
 
 type Product = {

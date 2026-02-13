@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./productsOwner.module.css";
+import styles from "./productsGuest.module.css";
 
 interface Product {
   id: number;
@@ -19,7 +19,7 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         await fetch("/api/keepAlive", { method: "POST" });
-        const res = await fetch("/api/productsOwner");
+        const res = await fetch("/api/productsGuest");
         const data = await res.json();
         setProducts(Array.isArray(data) ? data : []);
         console.log("Produits reçus :", data);
@@ -55,7 +55,7 @@ export default function ProductsPage() {
 
   const handleAddToShoppingList = async (product_id: number) => {
     try {
-      const res = await fetch("/api/productsOwner", {
+      const res = await fetch("/api/productsGuest", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ product_id }),
@@ -71,7 +71,7 @@ export default function ProductsPage() {
       <span className="card-title">{item.name}</span>
       <div className="card-actions">
         <button onClick={() => handleAddToShoppingList(item.id)} className="btn-primary">Ajouter à la liste</button>
-        <button onClick={() => router.push(`/productsOwner/${item.id}`)} className="btn-secondary">Voir le produit</button>
+        <button onClick={() => router.push(`/productsGuest/${item.id}`)} className="btn-secondary">Voir le produit</button>
       </div>
     </div>
   );
@@ -81,8 +81,8 @@ export default function ProductsPage() {
       <header className="responsive-header">
         <h1>Liste des produits</h1>
         <div>
-          <button onClick={() => router.push("/productsOwner/list")} className="btn-tertiary">Aller à la liste de courses</button>
-          <button onClick={() => router.push("/productsOwner/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
+          <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
+          <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
         </div>
         <div className="search-controls">
           <input
@@ -116,8 +116,8 @@ export default function ProductsPage() {
       </section>
 
       <footer className="action-buttons">
-        <button onClick={() => router.push("/productsOwner/list")} className="btn-tertiary">Aller à la liste de courses</button>
-        <button onClick={() => router.push("/productsOwner/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
+        <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
+        <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
       </footer>
     </div>
   );

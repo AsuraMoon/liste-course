@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../app.css";
-import "../products.css";
 
 
 const CreateNewProductPage = () => {
