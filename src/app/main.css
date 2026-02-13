@@ -1,0 +1,41 @@
+/* Conteneur principal de la HomePage */
+.home-container {
+  display: flex;
+  flex-direction: column;      /* Empile les éléments verticalement */
+  justify-content: center;     /* Centre verticalement */
+  align-items: center;         /* Centre horizontalement */
+  text-align: center;          /* Centre le texte */
+  gap: 2rem;                   /* Espacement entre les éléments */
+  width: 100%;
+  height: calc(var(--vh) * 100); /* Utilise la hauteur réelle de l'écran */
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Style du titre */
+.home-container h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Boutons */
+.navigate-button {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--primary-color);
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.navigate-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.navigate-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

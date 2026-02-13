@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image"
+import { Style } from "main";
 
 const HomePage = () => {
   const router = useRouter();
@@ -18,10 +19,10 @@ const HomePage = () => {
       <h1>MiamList
       </h1>
       <Image
-      src="Bread.png"
+      src="/bread.png"
       width={500}
       height={500}
-      alt="Picture of the author"
+      alt="Pain chaud sortie du four"
       />
 
       <button onClick={handleProducts} className="navigate-button">
