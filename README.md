@@ -67,9 +67,5 @@ Check the Next.js GitHub repository
 Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the Vercel platform.
-See the Next.js deployment documentation
- for more details.
+See the Next.js deployment documentation for more details.
 
-Si tu veux, je peux aussi te réécrire ton Dockerfile pour qu’il utilise directement .env, sans jamais mettre tes clés dans le Dockerfile ou dans le README. Ça rendrait le projet totalement sûr pour GitHub.
-
-Veux‑tu que je fasse ça ?
