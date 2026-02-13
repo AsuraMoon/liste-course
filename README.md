@@ -1,4 +1,4 @@
-#### Liste‑Course
+### ## Liste‑Course
 ### MiamListe — A Next.js (App Router) project to manage a shopping list.
 
 ### Getting started
