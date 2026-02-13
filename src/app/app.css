@@ -45,3 +45,97 @@ Utilise-les dans tes composants via var(--nom-de-la-variable).
   padding: 0;
   border: 0;
 }
+/* --- BOUTON PRIMAIRE --- */
+.primary-button {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 10px var(--hover-shadow);
+}
+
+.primary-button:disabled {
+  background: var(--primary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- BOUTON SECONDAIRE --- */
+.secondary-button {
+  background: var(--secondary-color);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--secondary-hover);
+  box-shadow: 0 4px 10px var(--hover-shadow);
+}
+
+.secondary-button:disabled {
+  background: var(--secondary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- BOUTON TERTIAIRE (warning léger) --- */
+.tertiary-button {
+  background: var(--tertiary-color);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tertiary-button:hover:not(:disabled) {
+  background: var(--tertiary-hover);
+  box-shadow: 0 4px 10px var(--hover-shadow);
+}
+
+.tertiary-button:disabled {
+  background: var(--tertiary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- BOUTON QUATERNAIRE (danger) --- */
+.quaternary-button {
+  background: var(--quaternary-color);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quaternary-button:hover:not(:disabled) {
+  background: var(--quaternary-hover);
+  box-shadow: 0 4px 10px var(--hover-shadow);
+}
+
+.quaternary-button:disabled {
+  background: var(--quaternary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}

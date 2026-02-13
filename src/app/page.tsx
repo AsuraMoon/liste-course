@@ -21,11 +21,11 @@ const HomePage = () => {
         className={styles.homeImage}
       />
 
-      <button onClick={handleProducts} className={styles.homeButton}>
+      <button onClick={handleProducts} className="primary-button">
         Connexion
       </button>
 
-      <button onClick={handleHomePage} className={styles.homeButton} disabled>
+      <button onClick={handleHomePage} className="quaternary-button" disabled>
         Démo
       </button>
     </div>
