@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Image from "next/image"
 
 const HomePage = () => {
   const router = useRouter();
@@ -12,18 +13,22 @@ const HomePage = () => {
     router.push("/");
   };
 
-  
-
   return (
     <div className="home-container">
-      <h1>Bonjour, Bienvenue sur MiamList.Si vous êtes visiteur sélectionnez Démo le mail et le code de démonstration vous attendrons, sachez que vous aurez une version restreinte de lapplication,
-      Sinon selectionner famille
+      <h1>MiamList
       </h1>
+      <Image
+      src="Bread.png"
+      width={500}
+      height={500}
+      alt="Picture of the author"
+      />
+
       <button onClick={handleProducts} className="navigate-button">
-        Connexion Famille
+        Connexion
       </button>
-      <button onClick={handleHomePage} className="navigate-button">
-        Connexion Démo
+      <button onClick={handleHomePage} className="navigate-button" disabled>
+        Démo
       </button>
     </div>
   );
