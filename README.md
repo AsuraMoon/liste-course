@@ -14,44 +14,32 @@ Copy env.example → .env and fill your keys before running the app in Docker or
 ## Development
 Install dependencies and start the dev server:
 
-```bash
-npm install
-npm run dev
-#### or
-yarn dev
-#### or
-pnpm dev
-#### or
-bun dev
-```
-
-Open http://localhost:3000 in your browser.
-Edit src/app/page.tsx (or app/page.tsx) — the page auto‑reloads while you work.
-
-### Local
-If you want to test a production build locally:
-
-```bash
-npm run build
-npm run start
-```
-Using Docker (recommended)
-This repository already contains a Dockerfile and an env.example. You do not need to recreate the Dockerfile.
-
 ### Create your .env
 
 ```bash
 cp env.example .env
 ```
 then edit .env and fill the keys
+
+### NPM Version
+
+```bash
+npm install
+npm run build
+npm run start
+```
+
+Open http://localhost:3000 in your browser.
+Edit src/app/page.tsx (or app/page.tsx) — the page auto‑reloads while you work.
+
+### Docker Version
+Using Docker (recommended)
+This repository already contains a Dockerfile and an env.example. You do not need to recreate the Dockerfile.
+
 Build the Docker image
 
 ```bash
 docker build -t liste-course .
-```
-Run the container
-
-```bash
 docker run -d -p 3000:3000 --env-file .env --name liste-course liste-course
 ```
 The app will be available at: http://localhost:3000.
