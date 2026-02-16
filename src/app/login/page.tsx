@@ -21,7 +21,7 @@ export default function LoginPage() {
     setError(""); // Reset des erreurs
 
     // On appelle ton API login
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
