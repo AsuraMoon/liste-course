@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./productsOwner.module.css";
 
 interface Product {
   id: number;
@@ -14,6 +13,16 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      // 🔥 Redirection forcée, quoi qu'il arrive
+      window.location.href = "/";
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,7 +47,9 @@ export default function ProductsPage() {
 
   const sortByName = (list: Product[]) =>
     [...list].sort((a, b) =>
-      sortOrder === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+      sortOrder === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name),
     );
 
   // position values must match exactly what comes from the API
@@ -70,8 +81,18 @@ export default function ProductsPage() {
     <div key={item.id} className="responsive-card">
       <span className="card-title">{item.name}</span>
       <div className="card-actions">
-        <button onClick={() => handleAddToShoppingList(item.id)} className="btn-primary">Ajouter à la liste</button>
-        <button onClick={() => router.push(`/productsOwner/${item.id}`)} className="btn-secondary">Voir le produit</button>
+        <button
+          onClick={() => handleAddToShoppingList(item.id)}
+          className="primary-button"
+        >
+          Ajouter à la liste
+        </button>
+        <button
+          onClick={() => router.push(`/productsOwner/${item.id}`)}
+          className="secondary-button"
+        >
+          Voir le produit
+        </button>
       </div>
     </div>
   );
@@ -80,9 +101,19 @@ export default function ProductsPage() {
     <div className="responsive-container">
       <header className="responsive-header">
         <h1>Liste des produits</h1>
-        <div>
-          <button onClick={() => router.push("/productsOwner/list")} className="btn-tertiary">Aller à la liste de courses</button>
-          <button onClick={() => router.push("/productsOwner/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
+        <div className="action-buttons">
+          <button
+            onClick={() => router.push("/productsOwner/list")}
+            className="tertiary-button"
+          >
+            Aller à la liste de courses
+          </button>
+          <button
+            onClick={() => router.push("/productsOwner/createNew")}
+            className="tertiary-button"
+          >
+            Créer un nouveau produit
+          </button>
         </div>
         <div className="search-controls">
           <input
@@ -115,10 +146,23 @@ export default function ProductsPage() {
         <div className="responsive-wrap">{basFraisGroup.map(renderCard)}</div>
       </section>
 
-      <footer className="action-buttons">
-        <button onClick={() => router.push("/productsOwner/list")} className="btn-tertiary">Aller à la liste de courses</button>
-        <button onClick={() => router.push("/productsOwner/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
-      </footer>
+      <div className="action-buttons">
+        <button
+          onClick={() => router.push("/productsOwner/list")}
+          className="primary-button"
+        >
+          Aller à la liste de courses
+        </button>
+        <button
+          onClick={() => router.push("/productsOwner/createNew")}
+          className="secondary-button"
+        >
+          Créer un nouveau produit
+        </button>
+        <button onClick={handleLogout} className="quaternary-button">
+          Se déconnecter
+        </button>
+      </div>
     </div>
   );
 }

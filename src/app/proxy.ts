@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+// Le proxy remplace le middleware.
+// Il intercepte toutes les requêtes définies dans "config.matcher".
+export function proxy(req: NextRequest) {
   const session = req.cookies.get("session")?.value;
+
   const path = req.nextUrl.pathname;
 
-  // --- ROUTES API PUBLIQUES ---
-  if (
-    path === "/api/login" ||
-    path === "/api/logout" ||
-    path === "/api/keepAlive"
-  ) {
+  // --- EXCEPTIONS : login et logout doivent être accessibles ---
+  if (path === "/api/login" || path === "/api/logout") {
     return NextResponse.next();
   }
 
@@ -25,12 +24,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // --- PAGE LOGIN : si déjà connecté → redirection ---
-  if (path === "/login" && session) {
-    return NextResponse.redirect(new URL("/productsOwner", req.url));
-  }
-
-  // --- PAGES PRIVÉES ---
+  // --- PROTECTION DES PAGES PRIVÉES ---
   if (
     path.startsWith("/productsOwner") ||
     path.startsWith("/private")
@@ -43,11 +37,11 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
+// Liste des routes interceptées par le proxy
 export const config = {
   matcher: [
     "/api/:path*",
     "/productsOwner/:path*",
     "/private/:path*",
-    "/login",
   ],
 };

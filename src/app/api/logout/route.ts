@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
 
-// Cette route est appelée quand l'utilisateur clique sur "logout"
 export async function POST() {
-  // On prépare une réponse JSON
-  const res = NextResponse.json({ success: true });
+  try {
+    const res = NextResponse.json({ success: true });
 
-  // On supprime le cookie "session"
-  res.cookies.set("session", "", {
-    httpOnly: true,   // toujours sécurisé
-    secure: true,     // HTTPS obligatoire
-    sameSite: "strict",
-    path: "/",
-    maxAge: 0,        // 0 = suppression immédiate
-  });
+    res.cookies.set("session", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 0, // suppression immédiate
+    });
 
-  return res;
+    return res;
+  } catch (err) {
+    console.error("Logout error:", err);
+    return NextResponse.json({ error: "Logout failed" }, { status: 500 });
+  }
 }

@@ -1,10 +1,7 @@
 /*
 Variables globales de thème pour MiamListe
 ------------------------------------------------
-Ces variables définissent les couleurs principales, les couleurs au survol,
-les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
 */
-
 :root {
   --primary-color: #2563eb;
   --primary-hover: #1e40af;
@@ -28,27 +25,6 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
 }
 
 /* ------------------------------
-   DARK MODE AUTOMATIQUE
------------------------------- */
-/*@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #111827;
-    --text-color: #f9fafb;
-
-    --card-shadow: rgba(255, 255, 255, 0.1);
-    --hover-shadow: rgba(255, 255, 255, 0.2);
-
-    --primary-color: #3b82f6;
-    --primary-hover: #1d4ed8;
-  }
-
-  .global-footer {
-    background: rgba(0, 0, 0, 0.4);
-    color: var(--text-color);
-  }
-}*/
-
-/* ------------------------------
    RESET GLOBAL
 ------------------------------ */
 .app-root,
@@ -59,8 +35,7 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
   box-sizing: border-box;
 }
 
-/* Le body devient un conteneur vertical */
-/* Le body devient un conteneur vertical */
+/* Layout global */
 .app-root {
   display: flex;
   flex-direction: column;
@@ -69,16 +44,15 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
   color: var(--text-color);
 }
 
-/* Le wrapper prend toute la hauteur disponible */
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1; /* ❤️ essentiel */
+  flex: 1;
 }
 
-/* Footer intégré, non-rolling */
+/* Footer */
 .global-footer {
-  margin-top: auto; /* ❤️ la magie */
+  margin-top: auto;
   text-align: center;
   padding: 0.8rem;
   font-size: 0.9rem;
@@ -91,201 +65,180 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
    BOUTONS (TES BOUTONS ORIGINAUX)
 ------------------------------ */
 
-.primary-button {
-  background: var(--primary-color);
-  color: white;
-  padding: 0.8rem 1.6rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.primary-button:hover:not(:disabled) {
-  background: var(--primary-hover);
-  box-shadow: 0 4px 10px var(--hover-shadow);
-}
-
-.primary-button:disabled {
-  background: var(--primary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.secondary-button {
-  background: var(--secondary-color);
-  color: white;
-  padding: 0.8rem 1.6rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.secondary-button:hover:not(:disabled) {
-  background: var(--secondary-hover);
-  box-shadow: 0 4px 10px var(--hover-shadow);
-}
-
-.secondary-button:disabled {
-  background: var(--secondary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.tertiary-button {
-  background: var(--tertiary-color);
-  color: white;
-  padding: 0.8rem 1.6rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.tertiary-button:hover:not(:disabled) {
-  background: var(--tertiary-hover);
-  box-shadow: 0 4px 10px var(--hover-shadow);
-}
-
-.tertiary-button:disabled {
-  background: var(--tertiary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
+.primary-button,
+.secondary-button,
+.tertiary-button,
 .quaternary-button {
-  background: var(--quaternary-color);
-  color: white;
   padding: 0.8rem 1.6rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
+  color: white;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.quaternary-button:hover:not(:disabled) {
-  background: var(--quaternary-hover);
-  box-shadow: 0 4px 10px var(--hover-shadow);
-}
+.primary-button { background: var(--primary-color); }
+.primary-button:hover:not(:disabled) { background: var(--primary-hover); box-shadow: 0 4px 10px var(--hover-shadow); }
 
+.secondary-button { background: var(--secondary-color); }
+.secondary-button:hover:not(:disabled) { background: var(--secondary-hover); box-shadow: 0 4px 10px var(--hover-shadow); }
+
+.tertiary-button { background: var(--tertiary-color); }
+.tertiary-button:hover:not(:disabled) { background: var(--tertiary-hover); box-shadow: 0 4px 10px var(--hover-shadow); }
+
+.quaternary-button { background: var(--quaternary-color); }
+.quaternary-button:hover:not(:disabled) { background: var(--quaternary-hover); box-shadow: 0 4px 10px var(--hover-shadow); }
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.tertiary-button:disabled,
 .quaternary-button:disabled {
-  background: var(--quaternary-hover);
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* --- PRIMARY MINI --- */
-.primary-button-mini {
-  background: var(--primary-color);
-  color: white;
-  padding: 0.4rem 0.9rem; /* plus petit */
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem; /* plus petit */
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.primary-button-mini:hover:not(:disabled) {
-  background: var(--primary-hover);
-  box-shadow: 0 2px 6px var(--hover-shadow);
-}
-
-.primary-button-mini:disabled {
-  background: var(--primary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-
-/* --- SECONDARY MINI --- */
-.secondary-button-mini {
-  background: var(--secondary-color);
-  color: white;
-  padding: 0.4rem 0.9rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.secondary-button-mini:hover:not(:disabled) {
-  background: var(--secondary-hover);
-  box-shadow: 0 2px 6px var(--hover-shadow);
-}
-
-.secondary-button-mini:disabled {
-  background: var(--secondary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-
-/* --- TERTIARY MINI --- */
-.tertiary-button-mini {
-  background: var(--tertiary-color);
-  color: white;
-  padding: 0.4rem 0.9rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.tertiary-button-mini:hover:not(:disabled) {
-  background: var(--tertiary-hover);
-  box-shadow: 0 2px 6px var(--hover-shadow);
-}
-
-.tertiary-button-mini:disabled {
-  background: var(--tertiary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-
-/* --- QUATERNARY MINI --- */
+/* MINI versions */
+.primary-button-mini,
+.secondary-button-mini,
+.tertiary-button-mini,
 .quaternary-button-mini {
-  background: var(--quaternary-color);
-  color: white;
   padding: 0.4rem 0.9rem;
   border-radius: 6px;
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
+  color: white;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.quaternary-button-mini:hover:not(:disabled) {
-  background: var(--quaternary-hover);
-  box-shadow: 0 2px 6px var(--hover-shadow);
+.primary-button-mini { background: var(--primary-color); }
+.primary-button-mini:hover:not(:disabled) { background: var(--primary-hover); box-shadow: 0 2px 6px var(--hover-shadow); }
+
+.secondary-button-mini { background: var(--secondary-color); }
+.secondary-button-mini:hover:not(:disabled) { background: var(--secondary-hover); box-shadow: 0 2px 6px var(--hover-shadow); }
+
+.tertiary-button-mini { background: var(--tertiary-color); }
+.tertiary-button-mini:hover:not(:disabled) { background: var(--tertiary-hover); box-shadow: 0 2px 6px var(--hover-shadow); }
+
+.quaternary-button-mini { background: var(--quaternary-color); }
+.quaternary-button-mini:hover:not(:disabled) { background: var(--quaternary-hover); box-shadow: 0 2px 6px var(--hover-shadow); }
+
+/* ------------------------------
+   FOND ASURAMOON
+------------------------------ */
+body {
+  background-image: url("data:image/svg+xml;utf8,\
+  <svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'>\
+    <text x='0' y='80' font-size='24' fill='rgba(0,0,0,0.02)' transform='rotate(-20 100 60)'>AsuraMoon</text>\
+  </svg>");
+  background-repeat: repeat;
+  background-size: 200px 120px;
 }
 
-.quaternary-button-mini:disabled {
-  background: var(--quaternary-hover);
-  opacity: 0.5;
-  cursor: not-allowed;
+/* ------------------------------
+   LAYOUT RESPONSIVE (MOBILE FIRST)
+------------------------------ */
+
+.responsive-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Recherche */
+.search-controls {
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  transition: box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+/* Titres */
+.responsive-header h1,
+section h2 {
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+/* Grille des cartes */
+.responsive-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .responsive-wrap { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .responsive-wrap { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1200px) {
+  .responsive-wrap { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Cartes */
+.responsive-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.responsive-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px var(--hover-shadow);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+/* Actions dans les cartes */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+@media (min-width: 600px) {
+  .card-actions { flex-direction: row; }
+}
+
+/* Boutons d'action en bas */
+.action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .action-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
