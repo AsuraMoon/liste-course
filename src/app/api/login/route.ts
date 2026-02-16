@@ -33,13 +33,13 @@ export async function POST(req: Request) {
 
   const response = NextResponse.json({ success: true });
 
-  // 🔥 secure = false en local, true en production
+  // 🔥 Cookie compatible local + Vercel
   response.cookies.set("session", user.id, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production", // obligatoire sur Vercel
+    sameSite: "lax", // strict bloque certaines redirections
     path: "/",
-    maxAge: 60 * 60 * 24 * 7
+    maxAge: 60 * 60 * 24 * 7, // 7 jours
   });
 
   return response;
