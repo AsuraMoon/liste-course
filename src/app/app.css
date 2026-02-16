@@ -243,3 +243,66 @@ section h2 {
     justify-content: center;
   }
 }
+
+/* ============================================================
+   DARK MODE AUTOMATIQUE (prefers-color-scheme)
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #111827; /* gris très foncé */
+    --text-color: #f3f4f6;       /* gris très clair */
+
+    --card-shadow: rgba(255, 255, 255, 0.05);
+    --hover-shadow: rgba(255, 255, 255, 0.15);
+
+    /* Couleurs adaptées au dark mode */
+    --primary-color: #3b82f6;
+    --primary-hover: #1d4ed8;
+
+    --secondary-color: #34d399;
+    --secondary-hover: #059669;
+
+    --tertiary-color: #fbbf24;
+    --tertiary-hover: #d97706;
+
+    --quaternary-color: #f87171;
+    --quaternary-hover: #dc2626;
+  }
+
+  /* Fond global */
+  .app-root {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  /* Fond AsuraMoon (optionnel) */
+  body {
+    background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'>\
+      <text x='0' y='80' font-size='24' fill='rgba(255,255,255,0.02)' transform='rotate(-20 100 60)'>AsuraMoon</text>\
+    </svg>");
+    background-repeat: repeat;
+    background-size: 200px 120px;
+    background-color: var(--background-color);
+  }
+
+  /* Cartes */
+  .responsive-card {
+    background: #1f2937; /* gris foncé */
+    color: var(--text-color);
+  }
+
+  /* Inputs */
+  .search-input {
+    background: #1f2937;
+    color: var(--text-color);
+    border: 1px solid #374151;
+  }
+
+  /* Footer */
+  .global-footer {
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-color);
+  }
+}
