@@ -30,7 +30,7 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
 /* ------------------------------
    DARK MODE AUTOMATIQUE
 ------------------------------ */
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   :root {
     --background-color: #111827;
     --text-color: #f9fafb;
@@ -46,7 +46,7 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
     background: rgba(0, 0, 0, 0.4);
     color: var(--text-color);
   }
-}
+}*/
 
 /* ------------------------------
    RESET GLOBAL
@@ -182,6 +182,109 @@ les couleurs d'arrière-plan et de texte, ainsi que des ombres réutilisables.
 }
 
 .quaternary-button:disabled {
+  background: var(--quaternary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- PRIMARY MINI --- */
+.primary-button-mini {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.4rem 0.9rem; /* plus petit */
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem; /* plus petit */
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primary-button-mini:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 2px 6px var(--hover-shadow);
+}
+
+.primary-button-mini:disabled {
+  background: var(--primary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- SECONDARY MINI --- */
+.secondary-button-mini {
+  background: var(--secondary-color);
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.secondary-button-mini:hover:not(:disabled) {
+  background: var(--secondary-hover);
+  box-shadow: 0 2px 6px var(--hover-shadow);
+}
+
+.secondary-button-mini:disabled {
+  background: var(--secondary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- TERTIARY MINI --- */
+.tertiary-button-mini {
+  background: var(--tertiary-color);
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tertiary-button-mini:hover:not(:disabled) {
+  background: var(--tertiary-hover);
+  box-shadow: 0 2px 6px var(--hover-shadow);
+}
+
+.tertiary-button-mini:disabled {
+  background: var(--tertiary-hover);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* --- QUATERNARY MINI --- */
+.quaternary-button-mini {
+  background: var(--quaternary-color);
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.quaternary-button-mini:hover:not(:disabled) {
+  background: var(--quaternary-hover);
+  box-shadow: 0 2px 6px var(--hover-shadow);
+}
+
+.quaternary-button-mini:disabled {
   background: var(--quaternary-hover);
   opacity: 0.5;
   cursor: not-allowed;

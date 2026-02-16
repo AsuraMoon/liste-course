@@ -81,6 +81,7 @@ export default function ProductsPage() {
       <header className="responsive-header">
         <h1>Liste des produits</h1>
         <div>
+          <button onClick={() => router.push("/")} className="tertiary-button"> Aller à l'accueil </button>
           <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
           <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
         </div>
