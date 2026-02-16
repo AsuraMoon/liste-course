@@ -118,6 +118,7 @@ export default function ProductsPage() {
 
       <footer className="action-buttons">
         <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
+        <button onClick={() => router.push("/")} className="secondary-button">Aller à l'accueil</button>
         <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
       </footer>
     </div>

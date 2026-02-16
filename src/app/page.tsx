@@ -15,10 +15,10 @@ const HomePage = () => {
   const router = useRouter(); 
   // Initialisation du router pour pouvoir naviguer entre les pages.
 
-  const handleProducts = () => router.push("/productsOwner");
+  const handleOwner = () => router.push("/login");
   // Redirige l'utilisateur vers l'espace propriétaire (connexion).
 
-  const handleHomePage = () => router.push("/productsGuest");
+  const handleGuest = () => router.push("/productsGuest");
   // Redirige vers la version démo / invité.
 
   return (
@@ -46,12 +46,12 @@ const HomePage = () => {
         // Force le chargement immédiat (utile car c'est l'image principale de la page).
       />
 
-      <button onClick={handleHomePage} className="quaternary-button">
+      <button onClick={handleGuest} className="quaternary-button">
         {/* Bouton menant à la version démo */}
         Démo
       </button>
 
-      <button onClick={handleProducts} className="primary-button">
+      <button onClick={handleOwner} className="primary-button">
         {/* Bouton menant à l'espace propriétaire */}
         Connexion
       </button>
