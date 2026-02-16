@@ -15,19 +15,6 @@ export default function ListPage() {
   const router = useRouter();
 
   /* ------------------------------
-     LOGOUT (redirection forcée)
-  ------------------------------ */
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/logout", { method: "POST" });
-    } catch (err) {
-      console.error("Logout error:", err);
-    } finally {
-      window.location.href = "/";
-    }
-  };
-
-  /* ------------------------------
      FETCH DE LA LISTE DE COURSES
   ------------------------------ */
   useEffect(() => {
@@ -36,7 +23,7 @@ export default function ListPage() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch("/api/shoppingOwnerList");
+        const res = await fetch("/api/shoppingGuestList");
         if (!res.ok) throw new Error(await res.text());
 
         const data = await res.json();
@@ -60,7 +47,7 @@ export default function ListPage() {
   ------------------------------ */
   const markAsBought = async (id: number) => {
     try {
-      const res = await fetch("/api/shoppingOwnerList", {
+      const res = await fetch("/api/shoppingGuestList", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ product_id: id }),
@@ -133,10 +120,10 @@ export default function ListPage() {
      CATÉGORIES DYNAMIQUES
   ------------------------------ */
   const categories = [
-    { title: "Haut", key: "haut" },
-    { title: "Bas Sec", key: "bas_sec" },
-    { title: "Bas Surgelé", key: "bas_surgele" },
-    { title: "Bas Frais", key: "bas_frais" },
+    { title: "Non Alimentaire", key: "haut" },
+    { title: "Nourriture Sèche", key: "bas_sec" },
+    { title: "Nourriture Surgelée", key: "bas_surgele" },
+    { title: "Nourriture Frais", key: "bas_frais" },
   ];
 
   /* ------------------------------
@@ -149,7 +136,7 @@ export default function ListPage() {
 
         <div className="action-buttons">
           <button
-            onClick={() => router.push("/productsOwner")}
+            onClick={() => router.push("/productsGuest")}
             className="tertiary-button"
           >
             Aller à la page des produits
@@ -165,21 +152,21 @@ export default function ListPage() {
       {/* Boutons bas de page */}
       <div className="action-buttons">
         <button
-          onClick={() => router.push("/productsOwner/createNew")}
+          onClick={() => router.push("/productsGuest/createNew")}
           className="secondary-button"
         >
           Créer un nouveau produit
         </button>
 
         <button
-          onClick={() => router.push("/productsOwner")}
+          onClick={() => router.push("/productsGuest")}
           className="tertiary-button"
         >
           Aller à la page des produits
         </button>
 
-        <button onClick={handleLogout} className="quaternary-button">
-          Se déconnecter
+        <button onClick={() => router.push("/")} className="quaternary-button">
+          Accueil
         </button>
       </div>
     </div>

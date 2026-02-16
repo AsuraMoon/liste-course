@@ -11,15 +11,14 @@ interface Product {
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await fetch("/api/logout", { method: "POST" });
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
-      // 🔥 Redirection forcée, quoi qu'il arrive
       window.location.href = "/";
     }
   };
@@ -28,16 +27,22 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         await fetch("/api/keepAlive", { method: "POST" });
+
         const res = await fetch("/api/productsOwner");
         const data = await res.json();
+
         setProducts(Array.isArray(data) ? data : []);
-        console.log("Produits reçus :", data);
       } catch (err) {
         console.error("Error fetching products:", err);
       }
     };
+
     fetchProducts();
   }, []);
+
+  /* ------------------------------
+     LOGIQUE DE TRI & RECHERCHE
+  ------------------------------ */
 
   const filterBySearch = (list: Product[]) => {
     if (!searchTerm) return list;
@@ -46,23 +51,14 @@ export default function ProductsPage() {
   };
 
   const sortByName = (list: Product[]) =>
-    [...list].sort((a, b) =>
-      sortOrder === "asc"
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name),
-    );
+    [...list].sort((a, b) => a.name.localeCompare(b.name));
 
-  // position values must match exactly what comes from the API
-  const isHaut = (p: Product) => p.position === "haut";
-  const isBasSec = (p: Product) => p.position === "bas_sec";
-  const isBasSurgele = (p: Product) => p.position === "bas_surgele";
-  const isBasFrais = (p: Product) => p.position === "bas_frais";
+  const filterByPosition = (pos: string) =>
+    sortByName(filterBySearch(products.filter((p) => p.position === pos)));
 
-  const all = products || [];
-  const hautGroup = sortByName(filterBySearch(all.filter(isHaut)));
-  const basSecGroup = sortByName(filterBySearch(all.filter(isBasSec)));
-  const basSurgeleGroup = sortByName(filterBySearch(all.filter(isBasSurgele)));
-  const basFraisGroup = sortByName(filterBySearch(all.filter(isBasFrais)));
+  /* ------------------------------
+     AJOUT À LA LISTE DE COURSES
+  ------------------------------ */
 
   const handleAddToShoppingList = async (product_id: number) => {
     try {
@@ -71,15 +67,21 @@ export default function ProductsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ product_id }),
       });
+
       if (res.ok) console.log("Produit ajouté à la liste de courses");
     } catch (err) {
       console.error("Error adding to shopping list:", err);
     }
   };
 
+  /* ------------------------------
+     RENDU D'UNE CARTE PRODUIT
+  ------------------------------ */
+
   const renderCard = (item: Product) => (
     <div key={item.id} className="responsive-card">
       <span className="card-title">{item.name}</span>
+
       <div className="card-actions">
         <button
           onClick={() => handleAddToShoppingList(item.id)}
@@ -87,6 +89,7 @@ export default function ProductsPage() {
         >
           Ajouter à la liste
         </button>
+
         <button
           onClick={() => router.push(`/productsOwner/${item.id}`)}
           className="secondary-button"
@@ -97,10 +100,22 @@ export default function ProductsPage() {
     </div>
   );
 
+  /* ------------------------------
+     CATÉGORIES DYNAMIQUES
+  ------------------------------ */
+
+  const categories = [
+    { title: "Haut", key: "haut" },
+    { title: "Bas Sec", key: "bas_sec" },
+    { title: "Bas Surgelé", key: "bas_surgele" },
+    { title: "Bas Frais", key: "bas_frais" },
+  ];
+
   return (
     <div className="responsive-container">
       <header className="responsive-header">
         <h1>Liste des produits</h1>
+
         <div className="action-buttons">
           <button
             onClick={() => router.push("/productsOwner/list")}
@@ -108,6 +123,7 @@ export default function ProductsPage() {
           >
             Aller à la liste de courses
           </button>
+
           <button
             onClick={() => router.push("/productsOwner/createNew")}
             className="tertiary-button"
@@ -115,6 +131,7 @@ export default function ProductsPage() {
             Créer un nouveau produit
           </button>
         </div>
+
         <div className="search-controls">
           <input
             type="text"
@@ -126,25 +143,15 @@ export default function ProductsPage() {
         </div>
       </header>
 
-      <section>
-        <h2>Haut</h2>
-        <div className="responsive-wrap">{hautGroup.map(renderCard)}</div>
-      </section>
-
-      <section>
-        <h2>Bas Sec</h2>
-        <div className="responsive-wrap">{basSecGroup.map(renderCard)}</div>
-      </section>
-
-      <section>
-        <h2>Bas Surgelé</h2>
-        <div className="responsive-wrap">{basSurgeleGroup.map(renderCard)}</div>
-      </section>
-
-      <section>
-        <h2>Bas Frais</h2>
-        <div className="responsive-wrap">{basFraisGroup.map(renderCard)}</div>
-      </section>
+      {/* Rendu dynamique des sections */}
+      {categories.map((cat) => (
+        <section key={cat.key}>
+          <h2>{cat.title}</h2>
+          <div className="responsive-wrap">
+            {filterByPosition(cat.key).map(renderCard)}
+          </div>
+        </section>
+      ))}
 
       <div className="action-buttons">
         <button
@@ -153,12 +160,14 @@ export default function ProductsPage() {
         >
           Aller à la liste de courses
         </button>
+
         <button
           onClick={() => router.push("/productsOwner/createNew")}
           className="secondary-button"
         >
           Créer un nouveau produit
         </button>
+
         <button onClick={handleLogout} className="quaternary-button">
           Se déconnecter
         </button>

@@ -62,7 +62,7 @@ Variables globales de thème pour MiamListe
 }
 
 /* ------------------------------
-   BOUTONS (TES BOUTONS ORIGINAUX)
+   BOUTONS
 ------------------------------ */
 
 .primary-button,
@@ -211,6 +211,7 @@ section h2 {
 }
 
 .card-title {
+  text-align: center;
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.8rem;

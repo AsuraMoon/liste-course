@@ -14,7 +14,7 @@ export default function CreateNewProductPage() {
      GESTION DES INPUTS
   ------------------------------ */
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
 
@@ -31,7 +31,7 @@ export default function CreateNewProductPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/productsOwner", {
+      const response = await fetch("/api/productsGuest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -40,12 +40,12 @@ export default function CreateNewProductPage() {
       if (!response.ok) {
         const text = await response.text();
         throw new Error(
-          `Failed to create product (${response.status}): ${text}`
+          `Failed to create product (${response.status}): ${text}`,
         );
       }
 
       alert("Produit ajouté avec succès !");
-      router.push("/productsOwner");
+      router.push("/productsGuest");
     } catch (error) {
       console.error("Error creating product:", error);
       alert("Une erreur est survenue lors de l'ajout du produit.");
@@ -97,10 +97,10 @@ export default function CreateNewProductPage() {
               onChange={handleInputChange}
               className="search-input"
             >
-              <option value="haut">Haut</option>
-              <option value="bas_sec">Bas Sec</option>
-              <option value="bas_surgele">Bas Surgelé</option>
-              <option value="bas_frais">Bas Frais</option>
+              <option value="haut">Non Alimentaire</option>
+              <option value="bas_sec">Nourriture Sèche</option>
+              <option value="bas_surgele">Nourriture Surgelée</option>
+              <option value="bas_frais">Nourriture Frais</option>
             </select>
           </div>
 
@@ -112,7 +112,7 @@ export default function CreateNewProductPage() {
 
             <button
               type="button"
-              onClick={() => router.push("/productsOwner")}
+              onClick={() => router.push("/productsGuest")}
               className="tertiary-button"
             >
               Voir la liste des produits

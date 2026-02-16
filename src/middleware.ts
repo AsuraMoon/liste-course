@@ -1,53 +1,42 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const session = req.cookies.get("session")?.value;
-  const path = req.nextUrl.pathname;
+  const url = req.nextUrl.pathname;
+  const token = req.cookies.get("session");
 
-  // --- ROUTES API PUBLIQUES ---
-  if (
-    path === "/api/login" ||
-    path === "/api/logout" ||
-    path === "/api/keepAlive"
-  ) {
+  /* ------------------------------
+     ROUTES PUBLIQUES (GUEST)
+  ------------------------------ */
+  const publicPrefixes = [
+    "/productsGuest",
+    "/shoppingGuestList",
+    "/api/productsGuest",
+    "/api/shoppingGuestList",
+    "/login",
+    "/api/login",
+    "/",
+  ];
+
+  // Si la route commence par un préfixe public → laisser passer
+  if (publicPrefixes.some((prefix) => url.startsWith(prefix))) {
     return NextResponse.next();
   }
 
-  // --- PROTECTION DES ROUTES API ---
-  if (path.startsWith("/api/")) {
-    if (!session) {
-      return NextResponse.json(
-        { error: "Not authenticated" },
-        { status: 401 }
-      );
-    }
-    return NextResponse.next();
-  }
-
-  // --- PAGE LOGIN : si déjà connecté → redirection ---
-  if (path === "/login" && session) {
-    return NextResponse.redirect(new URL("/productsOwner", req.url));
-  }
-
-  // --- PAGES PRIVÉES ---
-  if (
-    path.startsWith("/productsOwner") ||
-    path.startsWith("/private")
-  ) {
-    if (!session) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
+  /* ------------------------------
+     ROUTES PROTÉGÉES (OWNER)
+  ------------------------------ */
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();
 }
 
+/* ------------------------------
+   MATCHER : appliquer le middleware
+------------------------------ */
 export const config = {
   matcher: [
-    "/api/:path*",
-    "/productsOwner/:path*",
-    "/private/:path*",
-    "/login",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

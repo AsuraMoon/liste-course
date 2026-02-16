@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./productsGuest.module.css";
 
 interface Product {
   id: number;
@@ -12,23 +11,28 @@ interface Product {
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         await fetch("/api/keepAlive", { method: "POST" });
+
         const res = await fetch("/api/productsGuest");
         const data = await res.json();
+
         setProducts(Array.isArray(data) ? data : []);
-        console.log("Produits reçus :", data);
       } catch (err) {
         console.error("Error fetching products:", err);
       }
     };
+
     fetchProducts();
   }, []);
+
+  /* ------------------------------
+     LOGIQUE DE TRI & RECHERCHE
+  ------------------------------ */
 
   const filterBySearch = (list: Product[]) => {
     if (!searchTerm) return list;
@@ -37,21 +41,14 @@ export default function ProductsPage() {
   };
 
   const sortByName = (list: Product[]) =>
-    [...list].sort((a, b) =>
-      sortOrder === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
-    );
+    [...list].sort((a, b) => a.name.localeCompare(b.name));
 
-  // position values must match exactly what comes from the API
-  const isHaut = (p: Product) => p.position === "haut";
-  const isBasSec = (p: Product) => p.position === "bas_sec";
-  const isBasSurgele = (p: Product) => p.position === "bas_surgele";
-  const isBasFrais = (p: Product) => p.position === "bas_frais";
+  const filterByPosition = (pos: string) =>
+    sortByName(filterBySearch(products.filter((p) => p.position === pos)));
 
-  const all = products || [];
-  const hautGroup = sortByName(filterBySearch(all.filter(isHaut)));
-  const basSecGroup = sortByName(filterBySearch(all.filter(isBasSec)));
-  const basSurgeleGroup = sortByName(filterBySearch(all.filter(isBasSurgele)));
-  const basFraisGroup = sortByName(filterBySearch(all.filter(isBasFrais)));
+  /* ------------------------------
+     AJOUT À LA LISTE DE COURSES
+  ------------------------------ */
 
   const handleAddToShoppingList = async (product_id: number) => {
     try {
@@ -60,31 +57,71 @@ export default function ProductsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ product_id }),
       });
+
       if (res.ok) console.log("Produit ajouté à la liste de courses");
     } catch (err) {
       console.error("Error adding to shopping list:", err);
     }
   };
 
+  /* ------------------------------
+     RENDU D'UNE CARTE PRODUIT
+  ------------------------------ */
+
   const renderCard = (item: Product) => (
     <div key={item.id} className="responsive-card">
       <span className="card-title">{item.name}</span>
+
       <div className="card-actions">
-        <button onClick={() => handleAddToShoppingList(item.id)} className="btn-primary">Ajouter à la liste</button>
-        <button onClick={() => router.push(`/productsGuest/${item.id}`)} className="btn-secondary">Voir le produit</button>
+        <button
+          onClick={() => handleAddToShoppingList(item.id)}
+          className="primary-button"
+        >
+          Ajouter à la liste
+        </button>
+
+        <button
+          onClick={() => router.push(`/productsGuest/${item.id}`)}
+          className="secondary-button"
+        >
+          Voir le produit
+        </button>
       </div>
     </div>
   );
+
+  /* ------------------------------
+     CATÉGORIES DYNAMIQUES
+  ------------------------------ */
+
+  const categories = [
+    { title: "Non Alimentaire", key: "haut" },
+    { title: "Nourriture Sèche", key: "bas_sec" },
+    { title: "Nourriture Surgelée", key: "bas_surgele" },
+    { title: "Nourriture Frais", key: "bas_frais" },
+  ];
 
   return (
     <div className="responsive-container">
       <header className="responsive-header">
         <h1>Liste des produits</h1>
-        <div>
-          <button onClick={() => router.push("/")} className="tertiary-button"> Aller à l'accueil </button>
-          <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
-          <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
+
+        <div className="action-buttons">
+          <button
+            onClick={() => router.push("/productsGuest/list")}
+            className="tertiary-button"
+          >
+            Aller à la liste de courses
+          </button>
+
+          <button
+            onClick={() => router.push("/productsGuest/createNew")}
+            className="tertiary-button"
+          >
+            Créer un nouveau produit
+          </button>
         </div>
+
         <div className="search-controls">
           <input
             type="text"
@@ -96,31 +133,35 @@ export default function ProductsPage() {
         </div>
       </header>
 
-      <section>
-        <h2>Haut</h2>
-        <div className="responsive-wrap">{hautGroup.map(renderCard)}</div>
-      </section>
+      {/* Rendu dynamique des sections */}
+      {categories.map((cat) => (
+        <section key={cat.key}>
+          <h2>{cat.title}</h2>
+          <div className="responsive-wrap">
+            {filterByPosition(cat.key).map(renderCard)}
+          </div>
+        </section>
+      ))}
 
-      <section>
-        <h2>Bas Sec</h2>
-        <div className="responsive-wrap">{basSecGroup.map(renderCard)}</div>
-      </section>
+      <div className="action-buttons">
+        <button
+          onClick={() => router.push("/productsGuest/list")}
+          className="primary-button"
+        >
+          Aller à la liste de courses
+        </button>
 
-      <section>
-        <h2>Bas Surgelé</h2>
-        <div className="responsive-wrap">{basSurgeleGroup.map(renderCard)}</div>
-      </section>
+        <button
+          onClick={() => router.push("/productsGuest/createNew")}
+          className="secondary-button"
+        >
+          Créer un nouveau produit
+        </button>
 
-      <section>
-        <h2>Bas Frais</h2>
-        <div className="responsive-wrap">{basFraisGroup.map(renderCard)}</div>
-      </section>
-
-      <footer className="action-buttons">
-        <button onClick={() => router.push("/productsGuest/list")} className="btn-tertiary">Aller à la liste de courses</button>
-        <button onClick={() => router.push("/")} className="secondary-button">Aller à l'accueil</button>
-        <button onClick={() => router.push("/productsGuest/createNew")} className="btn-tertiary">Créer un nouveau produit</button>
-      </footer>
+        <button onClick={() => router.push("/")} className="quaternary-button">
+          Accueil
+        </button>
+      </div>
     </div>
   );
 }

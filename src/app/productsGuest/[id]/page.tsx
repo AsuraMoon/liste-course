@@ -27,7 +27,7 @@ export default function ProductPage(props: { params: Params }) {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/productsOwner/${id}`);
+        const response = await fetch(`/api/productsGuest/${id}`);
         if (!response.ok) throw new Error("Failed to fetch product");
 
         const data = await response.json();
@@ -52,7 +52,7 @@ export default function ProductPage(props: { params: Params }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/api/productsOwner/${id}`, {
+      const response = await fetch(`/api/productsGuest/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProduct),
@@ -61,7 +61,7 @@ export default function ProductPage(props: { params: Params }) {
       if (!response.ok) throw new Error("Failed to update product");
 
       alert("Produit mis à jour avec succès !");
-      router.push("/productsOwner");
+      router.push("/productsGuest");
     } catch (error) {
       console.error("Error updating product:", error);
       alert("Échec de la mise à jour du produit.");
@@ -73,14 +73,14 @@ export default function ProductPage(props: { params: Params }) {
   ------------------------------ */
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/productsOwner/${id}`, {
+      const response = await fetch(`/api/productsGuest/${id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) throw new Error("Failed to delete product");
 
       alert("Produit supprimé avec succès !");
-      router.push("/productsOwner");
+      router.push("/productsGuest");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -147,10 +147,10 @@ export default function ProductPage(props: { params: Params }) {
               }
               className="search-input"
             >
-              <option value="haut">Haut</option>
-              <option value="bas_sec">Bas Sec</option>
-              <option value="bas_surgele">Bas Surgelé</option>
-              <option value="bas_frais">Bas Frais</option>
+              <option value="haut">Non Alimentaire</option>
+              <option value="bas_sec">Nourriture Sèche</option>
+              <option value="bas_surgele">Nourriture Surgelée</option>
+              <option value="bas_frais">Nourriture Frais</option>
             </select>
           </div>
 
@@ -170,7 +170,7 @@ export default function ProductPage(props: { params: Params }) {
 
             <button
               type="button"
-              onClick={() => router.push("/productsOwner")}
+              onClick={() => router.push("/productsGuest")}
               className="tertiary-button"
             >
               Retour aux produits
