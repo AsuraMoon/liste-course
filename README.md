@@ -2,11 +2,6 @@
 ## MiamListe — A Next.js (App Router) project to manage a shopping list.
 
 MiamListe is a lightweight shopping‑list application built with Next.js 14, Supabase, and a clean SQL architecture.
-It supports two roles:
-
-Owner — full access (create, edit, delete products, manage the list)
-
-Guest — limited access (toggle items to buy)
 
 The UI is fully responsive, uses centralized CSS variables, and includes automatic dark mode via prefers-color-scheme.
 
