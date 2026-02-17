@@ -8,8 +8,6 @@ The UI is fully responsive, uses centralized CSS variables, and includes automat
 ## Features
 🛍️ Product management (owner): add, edit, delete, categorize
 
-👤 Guest mode: toggle items without modifying products
-
 🔒 Protected routes via Next.js middleware
 
 🗄️ Clean SQL schema with foreign keys, indexes, and triggers
