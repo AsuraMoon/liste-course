@@ -26,7 +26,7 @@ export default function RootLayout({
 
           <footer className="global-footer">
             <p>
-              © {new Date().getFullYear()} Made with ❤️ by Asu — Fullstack JS —{" "}
+              © {new Date().getFullYear()} Made by Asura — Fullstack JS —{" "}
               <a
                 href="https://github.com/AsuraMoon"
                 target="_blank"
